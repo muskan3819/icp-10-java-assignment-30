@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        h1{
+            text-align: center;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3dbdb;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            width: 300px;
+            height: 300px;
+            margin: 50px auto;
+        }
+        .cell {
+            background-color: #ea8484;
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .cell:hover {
+            background-color: #fec7c7;
+            border: 1px rgb(22, 22, 22);
+            border-style: groove;
+        }
+        .winner {
+            color: #ff0000;
+            text-align: center;
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <hr><hr>
+    <div class="game-board">
+        <button class="cell" id="cell-0"></button>
+        <button class="cell" id="cell-1"></button>
+        <button class="cell" id="cell-2"></button>
+        <button class="cell" id="cell-3"></button>
+        <button class="cell" id="cell-4"></button>
+        <button class="cell" id="cell-5"></button>
+        <button class="cell" id="cell-6"></button>
+        <button class="cell" id="cell-7"></button>
+        <button class="cell" id="cell-8"></button>
+    </div>
+    <p id="result"></p>
+
+    <script>
+        // Get the game board cells
+        const cells = document.querySelectorAll('.cell');
+
+        // Initialize the game state
+        let currentPlayer = 'X';
+        let gameOver = false;
+        let board = Array(9).fill(null);
+
+        // Add event listeners to the cells
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => {
+                // Check if the game is over or the cell is already occupied
+                if (gameOver || board[index]) {
+                    return;
+                }
+
+                // Update the game state
+                board[index] = currentPlayer;
+                cell.textContent = currentPlayer;
+
+                // Check for a winner
+                const winner = checkWinner();
+                if (winner) {
+                    gameOver = true;
+                    document.getElementById('result').textContent = `Player ${winner} wins!`;
+                    document.getElementById('result').classList.add('winner');
+                } else {
+                    // Switch to the next player
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            });
+        });
+
+        // Check for a winner
+        function checkWinner() {
+            const winConditions = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (const condition of winConditions) {
+                if (board[condition[0]] && board[condition[0]] === board[condition[1]] && board[condition[0]] === board[condition[2]]) {
+                    return board[condition[0]];
+                }
+            }
+
+            return null;
+        }
+    </script>
+</body>
+</html>
