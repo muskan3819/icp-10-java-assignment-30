@@ -40,6 +40,20 @@
             text-align: center;
             font-size: 28px;
         }
+        .btn{
+            width: 100px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #fec7c7;
+            transition-duration: 0.3s;
+        }
+        .btn:hover{
+            width: 105px;
+            height: 45px;
+            border-radius: 10px;
+            background-color: #f99494;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -57,10 +71,12 @@
         <button class="cell" id="cell-8"></button>
     </div>
     <p id="result"></p>
+    <center><button id="reset-btn" class="btn">Reset Game</button></center>
 
     <script>
         // Get the game board cells
         const cells = document.querySelectorAll('.cell');
+        const resetBtn = document.getElementById('reset-btn');
 
         // Initialize the game state
         let currentPlayer = 'X';
@@ -90,6 +106,23 @@
                     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
                 }
             });
+        });
+
+        // Add event listener to the reset button
+        resetBtn.addEventListener('click', () => {
+            // Reset the game state
+            currentPlayer = 'X';
+            gameOver = false;
+            board = Array(9).fill(null);
+
+            // Clear the game board cells
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+
+            // Clear the result text
+            document.getElementById('result').textContent = '';
+            document.getElementById('result').classList.remove('winner');
         });
 
         // Check for a winner
